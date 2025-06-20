@@ -20,14 +20,76 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+# 📝 AI Form Generator
 
-To learn more about Next.js, take a look at the following resources:
+An AI-powered form builder + analytics platform built with **Next.js**, **Drizzle ORM**, **NeonDB**, and **Google Generative AI (Gemini)**.  
+It allows users to:
+- Dynamically create forms
+- Collect and export user responses
+- Visualize analytics with charts
+- Generate AI-based summaries of responses
+- Handle payments via Razorpay
+- Use a credit system for paid features
+- Switch between 35+ beautiful UI themes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 Tech Stack
+
+| Tech | Purpose |
+|-------|---------|
+| **Next.js 15** | Frontend framework |
+| **React 19** | UI rendering |
+| **TailwindCSS + DaisyUI (35+ themes)** | Styling |
+| **Drizzle ORM** | Database ORM |
+| **NeonDB (PostgreSQL)** | Serverless database |
+| **Razorpay** | Payment & credit system integration |
+| **Google Generative AI (Gemini)** | AI summaries |
+| **Recharts** | Data visualization |
+| **XLSX.js** | Export data to Excel |
+| **Clerk** | User authentication |
+
+---
+
+## 📷 Demo Screenshots
+
+| Form Builder | Analytics + Charts | AI Summary | Razorpay Integration |
+|--------------|------------------|------------|---------------------|
+| ![Form Builder](demo/form-builder.png) | ![Analytics](demo/analytics.png) | ![AI Summary](demo/ai-summary.png) | ![Razorpay](demo/razorpay.png) |
+
+
+
+---
+
+## ⚡ Features
+
+✅ Dynamic form creation with customizable fields  
+✅ Collect and export responses to Excel  
+✅ Auto-generated charts per form field  
+✅ **Analytics page with AI-generated summaries (Gemini)**  
+✅ **Razorpay integration for payments and credit system**  
+✅ **35+ UI themes via DaisyUI**  
+✅ Secure authentication (Clerk)  
+✅ Unique user tracking  
+
+---
+
+## 💳 Credit System + Razorpay
+
+- Users can purchase credits through Razorpay.
+- Certain premium features (e.g., AI summary generation) consume credits.
+- Simple & secure Razorpay checkout flow.
+
+---
+
+## 📂 Project Structure (Highlights)
+/app
+└── /dashboard
+└── /analytics
+└── [formId]/page.jsx → Analytics + AI summary
+/configs → Drizzle + DB configs
+/components → Reusable UI components
+
 
 ## Deploy on Vercel
 
