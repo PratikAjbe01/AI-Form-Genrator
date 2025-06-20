@@ -1,0 +1,88 @@
+import { Button } from '@/components/ui/button'
+import { Share ,Edit, Trash} from 'lucide-react'
+import Link from 'next/link'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog"
+import React from 'react'
+import { JsonForms } from '@/configs/Schema'
+import { and, eq } from 'drizzle-orm'
+import { useUser } from '@clerk/nextjs'
+import { db } from '@/configs'
+import { RWebShare } from "react-web-share";
+
+const Formitem = ({formRecord,jsonform,refreshData}) => {
+     const {user}=useUser();
+    const onDeleteForm=async()=>{
+        const result=await db.delete(JsonForms)
+        .where(and(eq(JsonForms.id,formRecord.id),
+        eq(JsonForms.createdBy,user?.primaryEmailAddress?.emailAddress)))
+        
+        if(result)
+        {
+  console.log('formDeleted');
+            refreshData()
+        }
+    }
+  return (
+    <div className='border shadow-sm rounded-lg p-4'>
+        <div className='flex justify-between'>
+            <h2></h2>
+             <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <Trash className='h-5 w-5 text-red-600 
+                    cursor-pointer hover:scale-105 transition-all' 
+                   
+                    />
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete your account
+                        and remove your data from our servers.
+                    </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction className='bg-indigo-600 hover:bg-indigo-700'
+                     onClick={()=>onDeleteForm()}
+                     >Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+                </AlertDialog>
+       
+        </div>
+      <h2 className='font-bold text-lg'>{jsonform?.form_title}</h2>
+       <h2 className='text-sm text-gray-500'>{jsonform?.form_description}</h2>
+        <hr className='my-4'></hr>
+        <div className='flex justify-between'>
+          <RWebShare
+        data={{
+          text: jsonform?.form_title+" , Build your form in seconds with AI form Builder ",
+          url: process.env.NEXT_PUBLIC_BASE_URL+"/aiform/"+formRecord?.id,
+          title: jsonform?.form_title,
+        }}
+        onClick={() => console.log("shared successfully!")}
+      >
+    <Button variant="outline" size="sm" className="flex gap-2"> <Share className='h-5 w-5'/> Share</Button>
+
+      </RWebShare>
+         
+                    <Link href={'/edit-style/'+formRecord?.id}>
+                <Button className="flex gap-2 bg-indigo-600 hover:bg-indigo-700"  size="sm"> <Edit className='h-5 w-5'/> Edit</Button>
+            </Link>
+        </div>
+    </div>
+  )
+}
+
+export default Formitem
