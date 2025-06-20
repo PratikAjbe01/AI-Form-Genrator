@@ -55,7 +55,7 @@ It allows users to:
 
 | Form Builder | Analytics + Charts | AI Summary | Razorpay Integration |
 |--------------|------------------|------------|---------------------|
-| ![Form Builder](demo/form-builder.png) | ![Analytics](demo/analytics.png) | ![AI Summary](demo/ai-summary.png) | ![Razorpay](demo/razorpay.png) |
+| ![Form Builder](demo/form-edit.png) | ![Analytics](demo/analytics.png) | ![AI Summary](demo/summary.png) | ![Razorpay](demo/razorpay.png) |
 
 
 
