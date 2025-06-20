@@ -14,8 +14,8 @@ function Header() {
   const path=usePathname();
   return !path.includes('aiform')&&(
     <div className='pt-3 pl-10 pr-10 pb-3 border-b shadow-sm'>
-   <div className='flex items-center justify-between'>
-    <Image src={'/logo1.jpg'} width={55} height={55} alt='logo'/>
+   <div className='flex items-center justify-between cursor-pointer'>
+<Link href={'/'}>    <Image src={'/logo1.jpg'} width={55} height={55} alt='logo'/></Link>
 {isSignedIn?<div className='flex items-center justify-between gap-5'>
 <strong>{appUser}</strong>
   <Link href={'/dashboard'}>
