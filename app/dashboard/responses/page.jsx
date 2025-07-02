@@ -1,42 +1,51 @@
 "use client"
-import { db } from '@/configs'
 
-import { useUser } from '@clerk/nextjs'
-import { eq } from 'drizzle-orm'
-import React, { useEffect, useState } from 'react'
-import FormListItemResp from './_components/FormListItemResp'
-import { JsonForms } from '@/configs/Schema'
+import { db } from "@/configs"
+import { useUser } from "@clerk/nextjs"
+import { eq } from "drizzle-orm"
+import { useEffect, useState } from "react"
+import FormListItemResp from "./_components/FormListItemResp"
+import { JsonForms } from "@/configs/Schema"
 
 function Responses() {
+  const { user } = useUser()
+  const [formList, setFormList] = useState()
 
-    const {user}=useUser();
-    const [formList,setFormList]=useState();
+  useEffect(() => {
+    user && getFormList()
+  }, [user])
 
+  const getFormList = async () => {
+    const result = await db
+      .select()
+      .from(JsonForms)
+      .where(eq(JsonForms.createdBy, user?.primaryEmailAddress?.emailAddress))
 
-    useEffect(()=>{
-        user&&getFormList();
-    },[user])
+    setFormList(result)
+  }
 
-    const getFormList=async()=>{
-        const result=await db.select().from(JsonForms)
-        .where(eq(JsonForms.createdBy,user?.primaryEmailAddress?.emailAddress))
-        
-        setFormList(result);
-    }
-  return formList&&(
-    <div className='p-10'>
-        <h2 className='font-bold text-3xl flex items-center justify-between'>Responses</h2>
+  return (
+    formList && (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          {/* Header Section */}
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Responses
+            </h1>
+            <p className="text-gray-600 mt-2">View and export form responses</p>
+          </div>
 
-        <div className='grid grid-cols-2 lg:grid-cols-3 gap-5'>
-            {formList&&formList?.map((form,index)=>(
-                <FormListItemResp
-                key={index}
-                formRecord={form}
-                jsonForm={JSON.parse(form.jsonform)}
-                />
-            ))}
+          {/* Responses Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {formList &&
+              formList?.map((form, index) => (
+                <FormListItemResp key={index} formRecord={form} jsonForm={JSON.parse(form.jsonform)} />
+              ))}
+          </div>
         </div>
-    </div>
+      </div>
+    )
   )
 }
 

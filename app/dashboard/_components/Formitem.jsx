@@ -1,87 +1,129 @@
-import { Button } from '@/components/ui/button'
-import { Share ,Edit, Trash} from 'lucide-react'
-import Link from 'next/link'
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { Share, Edit, Trash } from "lucide-react"
+import Link from "next/link"
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-  } from "@/components/ui/alert-dialog"
-import React from 'react'
-import { JsonForms } from '@/configs/Schema'
-import { and, eq } from 'drizzle-orm'
-import { useUser } from '@clerk/nextjs'
-import { db } from '@/configs'
-import { RWebShare } from "react-web-share";
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Card, CardContent } from "@/components/ui/card"
+import { JsonForms } from "@/configs/Schema"
+import { and, eq } from "drizzle-orm"
+import { useUser } from "@clerk/nextjs"
+import { db } from "@/configs"
+import { RWebShare } from "react-web-share"
+import { useState } from "react"
 
-const Formitem = ({formRecord,jsonform,refreshData}) => {
-     const {user}=useUser();
-    const onDeleteForm=async()=>{
-        const result=await db.delete(JsonForms)
-        .where(and(eq(JsonForms.id,formRecord.id),
-        eq(JsonForms.createdBy,user?.primaryEmailAddress?.emailAddress)))
-        
-        if(result)
-        {
-  console.log('formDeleted');
-            refreshData()
-        }
+const Formitem = ({ formRecord, jsonform, refreshData }) => {
+  const { user } = useUser()
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  const onDeleteForm = async () => {
+    setIsDeleting(true)
+    try {
+      const result = await db
+        .delete(JsonForms)
+        .where(and(eq(JsonForms.id, formRecord.id), eq(JsonForms.createdBy, user?.primaryEmailAddress?.emailAddress)))
+      if (result) {
+        console.log("formDeleted")
+        refreshData()
+      }
+    } catch (error) {
+      console.error("Error deleting form:", error)
+    } finally {
+      setIsDeleting(false)
     }
-  return (
-    <div className='border shadow-sm rounded-lg p-4'>
-        <div className='flex justify-between'>
-            <h2></h2>
-             <AlertDialog>
-                <AlertDialogTrigger asChild>
-                    <Trash className='h-5 w-5 text-red-600 
-                    cursor-pointer hover:scale-105 transition-all' 
-                   
-                    />
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete your account
-                        and remove your data from our servers.
-                    </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction className='bg-indigo-600 hover:bg-indigo-700'
-                     onClick={()=>onDeleteForm()}
-                     >Continue</AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-                </AlertDialog>
-       
-        </div>
-      <h2 className='font-bold text-lg'>{jsonform?.form_title}</h2>
-       <h2 className='text-sm text-gray-500'>{jsonform?.form_description}</h2>
-        <hr className='my-4'></hr>
-        <div className='flex justify-between'>
-          <RWebShare
-        data={{
-          text: jsonform?.form_title+" , Build your form in seconds with AI form Builder ",
-          url: process.env.NEXT_PUBLIC_BASE_URL+"/aiform/"+formRecord?.id,
-          title: jsonform?.form_title,
-        }}
-        onClick={() => console.log("shared successfully!")}
-      >
-    <Button variant="outline" size="sm" className="flex gap-2"> <Share className='h-5 w-5'/> Share</Button>
+  }
 
-      </RWebShare>
-         
-                    <Link href={'/edit-style/'+formRecord?.id}>
-                <Button className="flex gap-2 bg-indigo-600 hover:bg-indigo-700"  size="sm"> <Edit className='h-5 w-5'/> Edit</Button>
-            </Link>
+  return (
+    <Card className="border border-gray-200 hover:border-indigo-300 transition-all duration-300 hover:shadow-lg group h-full">
+      <CardContent className="p-3 sm:p-6 h-full flex flex-col">
+        {/* Header with title and delete button */}
+        <div className="flex justify-between items-start gap-2 mb-4">
+          <div className="flex-1 min-w-0 pr-2">
+            <h2 className="font-bold text-sm sm:text-lg text-gray-900 mb-1 sm:mb-2 group-hover:text-indigo-600 transition-colors line-clamp-2 break-words">
+              {jsonform?.form_title || "Untitled Form"}
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-500 line-clamp-2 break-words">
+              {jsonform?.form_description || "No description available"}
+            </p>
+          </div>
+
+          {/* Delete button - always visible but smaller on mobile */}
+          <div className="flex-shrink-0">
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-red-500 hover:text-red-700 hover:bg-red-50 h-7 w-7 sm:h-8 sm:w-8 p-0"
+                >
+                  <Trash className="h-3 w-3 sm:h-4 sm:w-4" />
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="max-w-sm sm:max-w-lg">
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="text-base sm:text-lg">Delete Form</AlertDialogTitle>
+                  <AlertDialogDescription className="text-sm">
+                    Are you sure you want to delete "{jsonform?.form_title}"? This action cannot be undone and will
+                    permanently remove all associated data.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                  <AlertDialogCancel className="w-full sm:w-auto">Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    className="w-full sm:w-auto bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
+                    onClick={onDeleteForm}
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? "Deleting..." : "Delete Form"}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
-    </div>
+
+        {/* Action buttons - responsive layout */}
+        <div className="flex flex-col sm:flex-row gap-2 mt-auto">
+          <RWebShare
+            data={{
+              text: jsonform?.form_title + " , Build your form in seconds with AI form Builder ",
+              url: process.env.NEXT_PUBLIC_BASE_URL + "/aiform/" + formRecord?.id,
+              title: jsonform?.form_title,
+            }}
+            onClick={() => console.log("shared successfully!")}
+          >
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full sm:flex-1 border-gray-300 hover:border-indigo-400 hover:bg-indigo-50 bg-transparent text-xs sm:text-sm"
+            >
+              <Share className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              Share
+            </Button>
+          </RWebShare>
+
+          <Link href={"/edit-style/" + formRecord?.id} className="w-full sm:flex-1">
+            <Button
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-xs sm:text-sm"
+              size="sm"
+            >
+              <Edit className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+              Edit
+            </Button>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 
