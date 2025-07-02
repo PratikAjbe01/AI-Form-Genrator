@@ -11,7 +11,7 @@ import FormUi from "../_components/FormUi"
 import Controller from "../_components/Controller"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { RWebShare } from "react-web-share"
+
 
 function page({ params }) {
   const router = useRouter()
@@ -72,23 +72,32 @@ function page({ params }) {
                 Live Preview
               </Button>
             </Link>
-            <RWebShare
-              data={{
-                text: JsonForm?.form_title + " , Build your form in seconds with AI form Builder ",
-                url: process.env.NEXT_PUBLIC_BASE_URL + "/aiform/" + record?.id,
-                title: JsonForm?.form_title,
-              }}
-              onClick={() => console.log("shared successfully!")}
-            >
-              <Button
-                variant="outline"
-                size="sm"
-                className="flex gap-2 border-indigo-200 hover:border-indigo-300 hover:bg-indigo-50 transition-all duration-200 bg-transparent"
-              >
-                <Share className="h-4 w-4" />
-                Share
-              </Button>
-            </RWebShare>
+           <Button
+  variant="outline"
+  size="sm"
+  className="flex gap-2 border-indigo-200 hover:border-indigo-300 hover:bg-indigo-50 transition-all duration-200 bg-transparent"
+  onClick={() => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: JsonForm?.form_title,
+          text: JsonForm?.form_title + " , Build your form in seconds with AI Form Builder",
+          url: process.env.NEXT_PUBLIC_BASE_URL + "/aiform/" + record?.id,
+        })
+        .then(() => console.log("✅ Shared successfully"))
+        .catch((error) => console.error("❌ Share failed:", error));
+    } else {
+      navigator.clipboard.writeText(
+        process.env.NEXT_PUBLIC_BASE_URL + "/aiform/" + record?.id
+      );
+      alert("Link copied to clipboard!");
+    }
+  }}
+>
+  <Share className="h-4 w-4" />
+  Share
+</Button>
+
           </div>
         </div>
 

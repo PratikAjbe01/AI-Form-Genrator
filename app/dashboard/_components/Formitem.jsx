@@ -19,7 +19,7 @@ import { JsonForms } from "@/configs/Schema"
 import { and, eq } from "drizzle-orm"
 import { useUser } from "@clerk/nextjs"
 import { db } from "@/configs"
-import { RWebShare } from "react-web-share"
+
 import { useState } from "react"
 
 const Formitem = ({ formRecord, jsonform, refreshData }) => {
@@ -94,23 +94,29 @@ const Formitem = ({ formRecord, jsonform, refreshData }) => {
 
         {/* Action buttons - responsive layout */}
         <div className="flex flex-col sm:flex-row gap-2 mt-auto">
-          <RWebShare
-            data={{
-              text: jsonform?.form_title + " , Build your form in seconds with AI form Builder ",
-              url: process.env.NEXT_PUBLIC_BASE_URL + "/aiform/" + formRecord?.id,
-              title: jsonform?.form_title,
-            }}
-            onClick={() => console.log("shared successfully!")}
-          >
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full sm:flex-1 border-gray-300 hover:border-indigo-400 hover:bg-indigo-50 bg-transparent text-xs sm:text-sm"
-            >
-              <Share className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
-              Share
-            </Button>
-          </RWebShare>
+       <Button
+  variant="outline"
+  size="sm"
+  className="w-full sm:flex-1 border-gray-300 hover:border-indigo-400 hover:bg-indigo-50 bg-transparent text-xs sm:text-sm"
+  onClick={() => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: jsonform?.form_title,
+          text: `${jsonform?.form_title} — Build your form in seconds with AI Form Builder!`,
+          url: `${process.env.NEXT_PUBLIC_BASE_URL}/aiform/${formRecord?.id}`,
+        })
+        .then(() => console.log("✅ Shared successfully"))
+        .catch((error) => console.error("❌ Sharing failed", error))
+    } else {
+      alert("Web Share API is not supported in your browser.")
+    }
+  }}
+>
+  <Share className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+  Share
+</Button>
+
 
           <Link href={"/edit-style/" + formRecord?.id} className="w-full sm:flex-1">
             <Button
