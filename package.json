@@ -2,13 +2,15 @@
   "name": "aiformgenrator",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "db:push": "npx drizzle-kit push",
-    "db:studio": "npx drizzle-kit studio"
+    "db:studio": "npx drizzle-kit studio",
+     "vercel-build": "next build"
   },
 
   "dependencies": {
