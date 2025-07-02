@@ -2,11 +2,12 @@
 
 import FormUi from "@/app/edit-style/_components/FormUi"
 import { db } from "@/app/configs"
-import { JsonForms } from "@/app/configs/Schema"
+
 import { eq } from "drizzle-orm"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { JsonForms } from "@/app/configs/Schema"
 
 function LiveForm({ params }) {
   const [record, setRecord] = useState()
