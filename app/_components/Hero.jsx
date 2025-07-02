@@ -9,6 +9,7 @@ import analytics from "../../demo/analytics.png"
 import formEdit from "../../demo/form-edit.png"
 import razorpay from "../../demo/razorpay.png"
 import summary from "../../demo/summary.png"
+import { useRef } from "react"
 
 function EnhancedHero() {
   const { isSignedIn } = useUser()
@@ -20,6 +21,12 @@ function EnhancedHero() {
     { src: razorpay, alt: "Payment Integration", title: "Payments" },
     { src: summary, alt: "AI Summary", title: "AI Summary" },
   ]
+const howItWorksRef = useRef(null);
+
+
+const scrollToHowItWorks = () => {
+  howItWorksRef.current?.scrollIntoView({ behavior: "smooth" });
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
@@ -74,13 +81,15 @@ function EnhancedHero() {
                   </SignInButton>
                 )}
 
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-2 border-gray-300 hover:border-blue-500 px-8 py-4 text-lg bg-transparent"
-                >
-                  See How it Works
-                </Button>
+        <Button
+  variant="outline"
+  size="lg"
+  className="border-2 border-gray-300 hover:border-blue-500 px-8 py-4 text-lg bg-transparent"
+  onClick={scrollToHowItWorks}
+>
+  See How it Works
+</Button>
+
               </div>
 
               <div className="mt-12 flex items-center justify-center lg:justify-start space-x-8 text-sm text-gray-500">
@@ -114,7 +123,8 @@ function EnhancedHero() {
       </section>
 
       {/* How AI Forms Work Section */}
-      <section className="py-24 bg-white">
+   <section ref={howItWorksRef} className="py-24 bg-white">
+
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">How AI Forms Are Generated & Deployed Live</h2>
