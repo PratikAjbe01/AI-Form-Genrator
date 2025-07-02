@@ -2,17 +2,15 @@
   "name": "aiformgenrator",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
-  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "db:push": "npx drizzle-kit push",
-    "db:studio": "npx drizzle-kit studio",
-    "vercel-build": "next build"
+    "db:studio": "npx drizzle-kit studio"
   },
+
   "dependencies": {
     "@clerk/elements": "^0.23.32",
     "@clerk/nextjs": "^6.21.0",
@@ -38,13 +36,16 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-toastify": "^11.0.5",
+   
     "recharts": "^2.15.4",
     "tailwind-merge": "^3.3.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4",
     "daisyui": "^5.0.43",
     "drizzle-kit": "^0.31.1",
+    "jsx": "^0.9.89",
     "tailwindcss": "^4",
     "tw-animate-css": "^1.3.4"
   }
