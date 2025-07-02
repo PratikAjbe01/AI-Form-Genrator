@@ -13,12 +13,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import FieldEdit from './FieldEdit';
-import { db } from '@/configs';
+import { db } from '@/app/configs';
 import { and, eq } from 'drizzle-orm';
 
 import { useUser } from '@clerk/nextjs';
 import moment from 'moment/moment';
-import { JsonForms, userResponses } from '@/configs/Schema';
+import { JsonForms, userResponses } from '@/app/configs/Schema';
 
 
 function FormUi({ JsonForm ,setJsonForm,record,selectTheme,selectedStyle,editable=true}) {

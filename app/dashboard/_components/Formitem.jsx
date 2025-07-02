@@ -15,10 +15,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Card, CardContent } from "@/components/ui/card"
-import { JsonForms } from "@/configs/Schema"
+import { JsonForms } from "@/app/configs/Schema"
 import { and, eq } from "drizzle-orm"
 import { useUser } from "@clerk/nextjs"
-import { db } from "@/configs"
+import { db } from "@/app/configs"
 
 import { useState } from "react"
 

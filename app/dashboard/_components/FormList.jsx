@@ -1,7 +1,7 @@
 "use client"
 
-import { db } from "@/configs"
-import { JsonForms } from "@/configs/Schema"
+import { db } from "@/app/configs"
+import { JsonForms } from "@/app/configs/Schema"
 import { useUser } from "@clerk/nextjs"
 import { desc, eq } from "drizzle-orm"
 import { useEffect, useState } from "react"

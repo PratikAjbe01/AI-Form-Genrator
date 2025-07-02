@@ -2,10 +2,10 @@
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { JsonForms } from "@/configs/Schema"
+import { JsonForms } from "@/app/configs/Schema"
 import { eq, desc } from "drizzle-orm"
 import { useUser } from "@clerk/nextjs"
-import { db } from "@/configs"
+import { db } from "@/app/configs"
 import { useAppUser } from "@/app/_context/UserContext"
 import { LibraryBig, LineChart, MessageSquare, Shield, X } from "lucide-react"
 import Link from "next/link"

@@ -1,6 +1,6 @@
 
-import { db } from '@/configs'
-import { User } from '@/configs/Schema'
+import { db } from '@/app/configs'
+import { User } from '@/app/configs/Schema'
 import { eq } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 

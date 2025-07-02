@@ -1,7 +1,7 @@
 "use client"
 
-import { db } from "@/configs"
-import { JsonForms } from "@/configs/Schema"
+import { db } from "@/app/configs"
+import { JsonForms } from "@/app/configs/Schema"
 import { useUser } from "@clerk/nextjs"
 import { and, eq } from "drizzle-orm"
 import { ArrowLeft, Share, SquareArrowUpRight } from "lucide-react"

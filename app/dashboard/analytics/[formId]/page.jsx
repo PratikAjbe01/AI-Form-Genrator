@@ -2,8 +2,8 @@
 
 import { useParams, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
-import { db } from "@/configs"
-import { userResponses } from "@/configs/Schema"
+import { db } from "@/app/configs"
+import { userResponses } from "@/app/configs/Schema"
 import { eq } from "drizzle-orm"
 import { GoogleGenerativeAI } from "@google/generative-ai"
 

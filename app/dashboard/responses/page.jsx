@@ -1,11 +1,11 @@
 "use client"
 
-import { db } from "@/configs"
+import { db } from "@/app/configs"
 import { useUser } from "@clerk/nextjs"
 import { eq } from "drizzle-orm"
 import { useEffect, useState } from "react"
 import FormListItemResp from "./_components/FormListItemResp"
-import { JsonForms } from "@/configs/Schema"
+import { JsonForms } from "@/app/configs/Schema"
 
 function Responses() {
   const { user } = useUser()

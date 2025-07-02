@@ -1,8 +1,8 @@
 "use client"
 
 import FormUi from "@/app/edit-style/_components/FormUi"
-import { db } from "@/configs"
-import { JsonForms } from "@/configs/Schema"
+import { db } from "@/app/configs"
+import { JsonForms } from "@/app/configs/Schema"
 import { eq } from "drizzle-orm"
 import Image from "next/image"
 import Link from "next/link"

@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { db } from "@/configs"
-import { userResponses } from "@/configs/Schema"
+import { db } from "@/app/configs"
+import { userResponses } from "@/app/configs/Schema"
 import { eq } from "drizzle-orm"
 import { Download, Loader2, FileText } from "lucide-react"
 import { useEffect, useState } from "react"
