@@ -1,7 +1,7 @@
 // app/api/update-credit/route.ts
 
-import { db } from '@/app/configs'
-import { User } from '@/app/configs/Schema'
+import { db } from '../../configs/index'
+import { User } from '../../configs/Schema'
 import { eq } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 

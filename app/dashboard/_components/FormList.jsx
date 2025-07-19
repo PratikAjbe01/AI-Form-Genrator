@@ -1,41 +1,21 @@
 "use client"
 
-
 import { useUser } from "@clerk/nextjs"
-import { desc, eq } from "drizzle-orm"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import Formitem from "./Formitem"
-import { db } from "@/app/configs"
-import { JsonForms } from "@/app/configs/Schema"
+import { useAppStore } from "@/app/_context/store"
 
 function FormList() {
   const { user } = useUser()
-  const [formList, setFormList] = useState([])
-  const [loading, setLoading] = useState(true)
+  const { forms, formsLoading, fetchForms } = useAppStore()
 
   useEffect(() => {
-    user && GetFormList()
-  }, [user])
-
-  const GetFormList = async () => {
-    try {
-      setLoading(true)
-      const result = await db
-        .select()
-        .from(JsonForms)
-        .where(eq(JsonForms.createdBy, user?.primaryEmailAddress?.emailAddress))
-        .orderBy(desc(JsonForms.id))
-
-      setFormList(result)
-      console.log(result)
-    } catch (error) {
-      console.error("Error fetching forms:", error)
-    } finally {
-      setLoading(false)
+    if (user) {
+      fetchForms(user.primaryEmailAddress.emailAddress)
     }
-  }
+  }, [user, fetchForms])
 
-  if (loading) {
+  if (formsLoading) {
     return (
       <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
         {[...Array(6)].map((_, index) => (
@@ -47,7 +27,7 @@ function FormList() {
     )
   }
 
-  if (formList.length === 0) {
+  if (!forms || forms.length === 0) {
     return (
       <div className="text-center py-8 sm:py-12">
         <div className="w-16 h-16 sm:w-24 sm:h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -68,9 +48,9 @@ function FormList() {
 
   return (
     <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
-      {formList.map((form, ind) => (
+      {forms.map((form, ind) => (
         <div key={form.id || ind} className="h-full">
-          <Formitem jsonform={JSON.parse(form.jsonform)} formRecord={form} refreshData={GetFormList} />
+          <Formitem jsonform={JSON.parse(form.jsonform)} formRecord={form} refreshData={() => fetchForms(user.primaryEmailAddress.emailAddress)} />
         </div>
       ))}
     </div>

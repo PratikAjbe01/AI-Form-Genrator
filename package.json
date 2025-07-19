@@ -10,9 +10,8 @@
     "lint": "next lint",
     "db:push": "npx drizzle-kit push",
     "db:studio": "npx drizzle-kit studio",
-     "vercel-build": "next build"
+    "vercel-build": "next build"
   },
-
   "dependencies": {
     "@clerk/elements": "^0.23.32",
     "@clerk/nextjs": "^6.21.0",
@@ -38,10 +37,10 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-toastify": "^11.0.5",
-   
     "recharts": "^2.15.4",
     "tailwind-merge": "^3.3.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

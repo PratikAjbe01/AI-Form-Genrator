@@ -88,7 +88,7 @@ function Header() {
               <div className="flex items-center space-x-3">
                 {/* User greeting - hidden on mobile */}
                 {!loading && appUser && (
-                  <span key={appUser} className="hidden md:block mr-2 text-sm font-medium text-gray-700">
+                  <span key={appUser} className="hidden md:block mr-2 text-sm font-medium text-gray-700" suppressHydrationWarning={true}>
                     Welcome, <span className="text-blue-600">{appUser}</span>
                   </span>
                 )}

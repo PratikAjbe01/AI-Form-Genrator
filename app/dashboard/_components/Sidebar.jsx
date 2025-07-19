@@ -2,78 +2,52 @@
 
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
-import { JsonForms } from "@/app/configs/Schema"
-import { eq, desc } from "drizzle-orm"
 import { useUser } from "@clerk/nextjs"
-import { db } from "@/app/configs"
-import { useAppUser } from "@/app/_context/UserContext"
 import { LibraryBig, LineChart, MessageSquare, Shield, X } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
+import { useAppStore } from "@/app/_context/store"
 
 function SideNav() {
   const menuList = [
-    {
-      id: 1,
-      name: "My Forms",
-      icon: LibraryBig,
-      path: "/dashboard",
-    },
-    {
-      id: 2,
-      name: "Responses",
-      icon: MessageSquare,
-      path: "/dashboard/responses",
-    },
-    {
-      id: 3,
-      name: "Analytics",
-      icon: LineChart,
-      path: "/dashboard/analytics",
-    },
-    {
-      id: 4,
-      name: "Upgrade",
-      icon: Shield,
-      path: "/dashboard/upgrades",
-    },
+    { id: 1, name: "My Forms", icon: LibraryBig, path: "/dashboard" },
+    { id: 2, name: "Responses", icon: MessageSquare, path: "/dashboard/responses" },
+    { id: 3, name: "Analytics", icon: LineChart, path: "/dashboard/analytics" },
+    { id: 4, name: "Upgrade", icon: Shield, path: "/dashboard/upgrades" },
   ]
 
   const { user } = useUser()
   const path = usePathname()
   const [isOpen, setIsOpen] = useState(false)
-  const [formList, setFormList] = useState()
+  const { appUser, forms, fetchForms, fetchUser } = useAppStore()
   const [PercFileCreated, setPercFileCreated] = useState(0)
-  const { appUser, setUpdate, update } = useAppUser()
 
   // Listen for sidebar toggle events from header
   useEffect(() => {
     const handleToggle = (event) => {
       setIsOpen(event.detail.isOpen)
     }
-
     window.addEventListener("toggleSidebar", handleToggle)
     return () => window.removeEventListener("toggleSidebar", handleToggle)
   }, [])
 
   useEffect(() => {
-    user && GetFormList()
-  }, [user])
+    if (user) {
+      fetchUser(user.primaryEmailAddress.emailAddress)
+      fetchForms(user.primaryEmailAddress.emailAddress)
+    }
+  }, [user, fetchUser, fetchForms])
 
-  const GetFormList = async () => {
-    const result = await db
-      .select()
-      .from(JsonForms)
-      .where(eq(JsonForms.createdBy, user?.primaryEmailAddress?.emailAddress))
-      .orderBy(desc(JsonForms.id))
-
-    setFormList(result)
-    const remaining = Number(appUser)
-    const used = 5 - remaining
-    const perc = (used / 5) * 100
-    setPercFileCreated(perc)
-  }
+  useEffect(() => {
+    // Calculate percentage of forms created (assuming 5 is the max for free tier)
+    if (typeof appUser === 'number') {
+      const remaining = Number(appUser)
+      const used = 5 - remaining
+      const perc = (used / 5) * 100
+      setPercFileCreated(perc)
+    }
+  }, [appUser])
 
   const handleLinkClick = () => {
     // Close sidebar on mobile when a link is clicked

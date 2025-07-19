@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm"
 import Image from "next/image"
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { JsonForms } from "@/app/configs/Schema"
+import { JsonForms } from "../../configs/Schema"
 
 function LiveForm({ params }) {
   const [record, setRecord] = useState()

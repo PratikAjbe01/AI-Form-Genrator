@@ -61,6 +61,7 @@ const scrollToHowItWorks = () => {
                     size="lg"
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg"
                     asChild
+                    suppressHydrationWarning={true}
                   >
                     <a href="/dashboard">
                       <Zap className="w-5 h-5 mr-2" />
@@ -73,6 +74,7 @@ const scrollToHowItWorks = () => {
                     <Button
                       size="lg"
                       className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg"
+                      suppressHydrationWarning={true}
                     >
                       <Zap className="w-5 h-5 mr-2" />
                       Create AI Form
